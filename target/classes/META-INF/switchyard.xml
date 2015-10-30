@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sy:switchyard xmlns:camel="urn:switchyard-component-camel:config:1.1" xmlns:jms="urn:switchyard-component-camel-jms:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="cameltest" targetNamespace="urn:com.example.switchyard:cameltest:1.0">
+  <sca:composite name="cameltest" targetNamespace="urn:com.example.switchyard:cameltest:1.0">
+    <sca:component name="CamelServiceRoute">
+      <camel:implementation.camel>
+        <camel:java class="com.example.switchyard.cameltest.CamelServiceRoute"/>
+      </camel:implementation.camel>
+      <sca:service name="CamelService">
+        <sca:interface.java interface="com.example.switchyard.cameltest.CamelService"/>
+      </sca:service>
+    </sca:component>
+    <sca:service name="CamelService" promote="CamelServiceRoute/CamelService">
+      <sca:interface.java interface="com.example.switchyard.cameltest.CamelService"/>
+      <jms:binding.jms name="jms1">
+        <sy:operationSelector operationName="process"/>
+        <jms:queue>queue/test</jms:queue>
+        <jms:connectionFactory>#activemq/ConnectionFactory</jms:connectionFactory>
+      </jms:binding.jms>
+    </sca:service>
+  </sca:composite>
+</sy:switchyard>
